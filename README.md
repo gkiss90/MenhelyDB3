@@ -1,2 +1,0 @@
-# MenhelyDB3
-beadandó
