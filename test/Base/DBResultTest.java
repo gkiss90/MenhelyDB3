@@ -42,6 +42,8 @@ public class DBResultTest {
     /**
      * Test of DBConnect method, of class DBResult.
      */
+    
+    //hibás
     @Test
     public void testDBConnect() {
         System.out.println("DBConnect");
@@ -50,8 +52,7 @@ public class DBResultTest {
         Connection expResult = null;
         Connection result = instance.DBConnect(SQL);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -65,8 +66,7 @@ public class DBResultTest {
         ResultSet expResult = null;
         ResultSet result = instance.RSCreate(SQL);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }

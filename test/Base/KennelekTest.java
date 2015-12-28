@@ -45,8 +45,7 @@ public class KennelekTest {
         System.out.println("main");
         String[] args = null;
         Kennelek.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -57,8 +56,7 @@ public class KennelekTest {
         System.out.println("DBFill");
         Kennelek instance = new Kennelek();
         instance.DBFill();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -69,8 +67,7 @@ public class KennelekTest {
         System.out.println("FillIn");
         Kennelek instance = new Kennelek();
         instance.FillIn();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -81,8 +78,7 @@ public class KennelekTest {
         System.out.println("UpdateRecord");
         Kennelek instance = new Kennelek();
         instance.UpdateRecord();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -93,8 +89,7 @@ public class KennelekTest {
         System.out.println("InsertRecord");
         Kennelek instance = new Kennelek();
         instance.InsertRecord();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -107,8 +102,7 @@ public class KennelekTest {
         int expResult = 0;
         int result = instance.NextID();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }
