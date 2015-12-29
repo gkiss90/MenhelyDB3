@@ -7,10 +7,20 @@ package Base;
 
 //import java.sql.Connection;
 //import java.sql.DriverManager;
+import static Base.Menhely.logger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 //import java.sql.Statement;
 import javax.swing.JOptionPane;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -33,6 +43,8 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
     
     //lekérdezés
     
+    static Logger logger = Logger.getLogger(Kennelek.class.getName());
+    
         DBResult db = new DBResult();
         ResultSet rs = db.RSCreate("select * from cella");
         int curRow = 0;
@@ -43,6 +55,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
     public Kennelek() {
         initComponents();
         DBFill();
+        logger.log(Level.INFO, "Kennelek form megnyitva");
     }
 /*
     @Override
@@ -106,6 +119,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         jButtonCancel = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -192,6 +206,14 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             }
         });
 
+        jButtonDelete.setText("Delete");
+        jButtonDelete.setActionCommand("");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -223,10 +245,16 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8))))
-                        .addGap(30, 30, 30)
-                        .addComponent(textFerohely, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(jButtonBack))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(textFerohely, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                                .addComponent(jButtonBack))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(84, 84, 84)
+                                .addComponent(jButtonDelete)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -271,8 +299,9 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
                     .addComponent(jLabel5)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(textMelyseg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel8)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jLabel8)
+                        .addComponent(jButtonDelete)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNext)
                     .addComponent(jButtonPrev)
@@ -309,16 +338,19 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         {
             if(rs.next())
             {
+                logger.log(Level.INFO, "Következő kennel megjelenítése");
                 FillIn();
             }
             else
             {
+                logger.log(Level.INFO, "Nincs következő kennel a DB-ben");
                 rs.previous();
-                JOptionPane.showMessageDialog(this, "End of file");
+                JOptionPane.showMessageDialog(this, "Utolsó kennel");
             }
         }
         catch(SQLException e)
         {
+            logger.log(Level.INFO, "Hiba a kennelek közti léptetés közben:"+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
@@ -331,16 +363,19 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         {
             if(rs.previous())
             {
+                logger.log(Level.INFO, "Előző kennel megjelenítése");
                 FillIn();
             }
             else
             {
+                logger.log(Level.INFO, "Nincs korábbi kennel a DB-ben");
                 rs.next();
-                JOptionPane.showMessageDialog(this, "Beginning of file");
+                JOptionPane.showMessageDialog(this, "Első kennel");
             }
         }
         catch(SQLException e)
         {
+            logger.log(Level.INFO, "Hiba a kennelek közti léptetés közben:"+e);
             JOptionPane.showMessageDialog(Kennelek.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
@@ -349,6 +384,8 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         // TODO add your handling code here:
         
         //a form előkészítése egy új kennel beviteléhez
+        
+        logger.log(Level.INFO, "új kutya bevitele kezdődik");
         try
         {
         curRow = rs.getRow();
@@ -364,8 +401,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonPrev.setEnabled(false);
             jButtonUpdate.setEnabled(false);
             jButtonNew.setEnabled(false);
+            jButtonDelete.setEnabled(false);
+            logger.log(Level.INFO, "Új kennel felvételére felkészítés");
         }
                 catch(SQLException e){
+                    logger.log(Level.INFO, "Új kennel felvételére való felkészítés közben hiba lépett fel: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
@@ -385,8 +425,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonPrev.setEnabled(true);
             jButtonUpdate.setEnabled(true);
             jButtonNew.setEnabled(true);
+            jButtonDelete.setEnabled(true);
+            logger.log(Level.INFO, "Új kennel létrehozásából való kilépés");
         }
         catch(SQLException e){
+            logger.log(Level.INFO, "Hiba új kennel létrehozásából kilépés alatt: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
@@ -411,9 +454,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonPrev.setEnabled(true);
             jButtonUpdate.setEnabled(true);
             jButtonNew.setEnabled(true);
+            logger.log(Level.INFO, "Új kennel sikeresen elmentve");
         }
         catch(SQLException e)
         {
+            logger.log(Level.INFO, "Hiba az új kennel mentése közben"+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonSaveActionPerformed
@@ -425,13 +470,34 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         try{
         db.stmt.close();
         rs.close();
+        logger.log(Level.INFO, "DB kapcsolat zárása");
         }
-         catch(SQLException err)
+         catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Hiba a db kapcsolat zárása közben: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
+        logger.log(Level.INFO, "Visszaléps Main Menu-be");
         this.dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+        // TODO add your handling code here:
+                //record törlése
+        try{
+        rs.deleteRow();
+        db.stmt.close();
+        rs.close();
+        rs = db.RSCreate("select * from cella");
+        DBFill();
+        logger.log(Level.INFO, "Kennel törölve");
+        }
+        catch(SQLException e)
+        {
+            logger.log(Level.INFO, "Hiba a kennel törlése közben"+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -466,7 +532,25 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             new Kennelek().setVisible(true);
             }
         });
- 
+        /*  
+        try {
+               logger.setLevel(Level.FINE);
+        logger.addHandler(new ConsoleHandler());
+        //adding custom handler
+       
+        try {
+            //FileHandler file name with max size and number of log files limit
+            Handler fileHandler = new FileHandler("/Users/Gabor/tmp/logger.log", 2000, 5);
+            
+            //setting custom filter for FileHandler
+            
+            logger.addHandler(fileHandler);
+             
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
+        
+ */
     }
 //mezők kitöltése léptetéssel
 
@@ -518,6 +602,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
         catch (SQLException e)
         {
+            logger.log(Level.INFO, "Adatlekérés közben fellépett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -529,6 +614,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
     @Override
     public void UpdateRecord() {
  
+          String id = textID.getText();
           String hosszString = textHossz.getText();
           int hossz = Integer.parseInt(hosszString);
           String melysegString = textMelyseg.getText();
@@ -537,7 +623,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
           int magassag = Integer.parseInt(magassagString);
           String ferohelyString = textFerohely.getText();
           int ferohely = Integer.parseInt(ferohelyString);
-        
+          
            
              try{
                       
@@ -547,10 +633,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.updateInt("magassag", magassag);
         rs.updateInt("ferohely", ferohely);
         rs.updateRow();
-        
+        logger.log(Level.INFO, "ID. "+id+" módosítva");
         }
         catch (SQLException e)
         {
+            logger.log(Level.INFO, "Módosítás közben fellépett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -582,11 +669,12 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.updateInt("magassag", magassag);
         rs.updateInt("ferohely", ferohely);
         rs.insertRow();
-        
+        logger.log(Level.INFO, "létrehozott új egyed: "+ID);
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Új egyed létrehozása közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     //új recordnak következő ID kiszámítása
@@ -598,12 +686,13 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.last();
         int rownumber = rs.getInt("ID");
         rs.absolute(curentRow);
+        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
         return rownumber + 1;
-    
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
             return -1;
         }
 
@@ -612,6 +701,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonNew;
     private javax.swing.JButton jButtonNext;
     private javax.swing.JButton jButtonPrev;

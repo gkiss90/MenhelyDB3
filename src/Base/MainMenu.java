@@ -5,7 +5,16 @@
  */
 package Base;
 
+import static Base.LogIn.logger;
 import javax.swing.JOptionPane;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +28,7 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
     }
-
+static Logger logger = Logger.getLogger(MainMenu.class.getName());
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,7 +117,7 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         //továbblép a kutyák formjára
-        
+        logger.log(Level.INFO, "kutyák megnyitva");
         Menhely menhely = new Menhely();
         menhely.setVisible(true);
         
@@ -118,6 +127,7 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         //visszatér a login formra
+                logger.log(Level.INFO, "kijelentkezés");
                         LogIn login = new LogIn();
                 login.setVisible(true);
                 this.dispose();
@@ -126,7 +136,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButtonKennelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKennelActionPerformed
         // TODO add your handling code here:
         //továbblép a kennel formra
-        
+                logger.log(Level.INFO, "kennel megnyitva");
         Kennelek kennel = new Kennelek();
         kennel.setVisible(true);
     }//GEN-LAST:event_jButtonKennelActionPerformed
@@ -164,6 +174,12 @@ public class MainMenu extends javax.swing.JFrame {
                 new MainMenu().setVisible(true);
             }
         });
+        
+        logger.setLevel(Level.FINE);
+        logger.addHandler(new ConsoleHandler());
+        //adding custom handler
+        
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

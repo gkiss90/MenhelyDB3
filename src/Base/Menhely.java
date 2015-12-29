@@ -16,6 +16,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class Menhely extends javax.swing.JFrame implements DBConnectionInterface {
 
@@ -31,17 +39,21 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
     Connection con;
     Statement stmt;
     */
+    
+    static Logger logger = Logger.getLogger(Menhely.class.getName());
+    
     int curRow = 0;   
     
     //db kapcsolat felállítása
     
-     DBResult db = new DBResult();
+    DBResult db = new DBResult();
     ResultSet rs = db.RSCreate("select * from kutyak");
     
     public Menhely() {
         initComponents();
        //ComboFill();
        DBFill();
+       logger.log(Level.INFO, "Menhely form megnyitva");
        
         
     }
@@ -100,9 +112,9 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             * */
         }
         catch
-                 (SQLException err)
+                 (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
@@ -158,9 +170,10 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             }
             
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Adatlekérés közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
 
@@ -199,10 +212,13 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.updateBoolean("apolas_alatt", apolase);
         rs.updateRow();
         
+        logger.log(Level.INFO, "ID. "+ID+"módosítva");
+        
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Módosítás közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
@@ -231,18 +247,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
            
              try{
                       
-       rs.updateInt("ID", ID);
+        rs.updateInt("ID", ID);
         rs.updateString("Nev", Nev);
         rs.updateString("Fajta", Faj);
         rs.updateInt("Kor", Kor);
         rs.updateInt("Cella_id", Cella);
         rs.updateBoolean("apolas_alatt", apolase);
         rs.insertRow();
-        
+        logger.log(Level.INFO, "létrehozott új egyed: "+ID);
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Új egyed létrehozása közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
@@ -256,12 +273,13 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.last();
         int rownumber = rs.getInt("ID");
         rs.absolute(curentRow);
+        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
         return rownumber + 1;
-    
         }
-        catch (SQLException err)
+        catch (SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
             return 0;
         }
 
@@ -297,16 +315,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             rsCella.close();
             rs.absolute(curRow);
+            logger.log(Level.INFO, textCella.getText()+" kennelben már nincs hely");
             return false;
             
         }
         else
             rsCella.close();
             rs.absolute(curRow);
+            logger.log(Level.INFO, textCella.getText()+" kennelben még van hely");
             return true;
         }
         catch (SQLException e)
         {
+            logger.log(Level.INFO, "Kennel férőhely ellenőrzés alatt fellépett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
             return false;
         }
@@ -583,7 +604,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
         //végrehajtja a módosítást
-        
+        logger.log(Level.INFO, "Adatmódosítás megkezdése");
         UpdateRecord();
     
     
@@ -610,9 +631,11 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jComboBox1.setEnabled(false);
         jButtonSave.setEnabled(true);
         jButtonCancel.setEnabled(true);
+        logger.log(Level.INFO, "Új egyed felvételére felkészítés");
         
         }
-        catch(SQLException e){
+        catch(Exception e){
+            logger.log(Level.INFO, "Új egyed felvételére való felkészítés közben hiba lépett fel: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNewActionPerformed
@@ -631,8 +654,10 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jButtonCancel.setEnabled(false);
         jComboBox1.setEnabled(true);
         textID.setEnabled(false);
+        logger.log(Level.INFO, "Új egyed létrehozásából kilépés");
         }
         catch(SQLException e){
+            logger.log(Level.INFO, "Hiba új egyed létrehozásából kilépés alatt: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonCancelActionPerformed
@@ -644,15 +669,17 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         
         try
         {
-            curRow = rs.getRow();
+        curRow = rs.getRow();
             
         db.stmt.close();
         rs.close();
         rs = db.RSCreate("select * from kutyak");
         rs.absolute(curRow);
         FillIn();
+        logger.log(Level.INFO, "A form adatainak frissítése");
         }
         catch(SQLException e){
+            logger.log(Level.INFO, "A form adatainak frissítése közben fellépett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonRefreshActionPerformed
@@ -665,17 +692,20 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             if(rs.next())
             {
+                logger.log(Level.INFO, "Következő egyed megjelenítése");
                 FillIn();
             }
             else
             {
                 rs.previous();
+                logger.log(Level.INFO, "Nincs következő egyed a DB-ben");
                 JOptionPane.showMessageDialog(Menhely.this, "End of file");
             }
         }
-        catch(SQLException err)
+        catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(Menhely.this, err.getMessage());
+            logger.log(Level.INFO, "Hiba az egyed közti léptetés közben: "+e);
+            JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
 
@@ -687,17 +717,20 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             if(rs.previous())
             {
+                logger.log(Level.INFO, "Előző egyed megjelenítése");
                 FillIn();
             }
             else
             {
                 rs.next();
+                logger.log(Level.INFO, "Nincs korábbi egyed a DB-ben");
                 JOptionPane.showMessageDialog(Menhely.this, "Beginning of file");
             }
         }
-        catch(SQLException err)
+        catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(Menhely.this, err.getMessage());
+            logger.log(Level.INFO, "Előző egyed megjelenítése");
+            JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
 
@@ -711,10 +744,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.close();
         rs = db.RSCreate("select * from kutyak");
         DBFill();
+        logger.log(Level.INFO, "Egyed törölve");
         }
-        catch(SQLException err)
+        catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(Menhely.this, err.getMessage());
+            logger.log(Level.INFO, "Hiba az egyed törlése közben"+e);
+            JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
         
     }//GEN-LAST:event_jButtonDeleteActionPerformed
@@ -751,10 +786,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jComboBox1.setEnabled(true);
         textID.setEnabled(false);
         checkApolas.setSelected(false);
+        logger.log(Level.INFO, "Új egyed sikeresen elmentve");
         }
-        catch(SQLException err)
+        catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Hiba az új egyed mentése közben "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
@@ -765,11 +802,15 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
          try{
         db.stmt.close();
         rs.close();
+        logger.log(Level.INFO, "DB kapcsolat zárása");
         }
-         catch(SQLException err)
+         
+         catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(this, err.getMessage());
+            logger.log(Level.INFO, "Hiba a db kapcsolat zárása közben: "+e);
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
+        logger.log(Level.INFO, "Main Menu-be visszalépés");
         this.dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 

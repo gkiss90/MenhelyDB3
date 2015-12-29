@@ -16,6 +16,17 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+
+
 
 public class LogIn extends javax.swing.JFrame {
 
@@ -26,7 +37,7 @@ public class LogIn extends javax.swing.JFrame {
     public LogIn() {
         initComponents();
     }
-
+static Logger logger = Logger.getLogger(LogIn.class.getName());
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,7 +141,7 @@ public class LogIn extends javax.swing.JFrame {
             // sql futtatas
             
             Statement stmt = con.createStatement();
-            String SQL = "select * form kutyak";
+            String SQL = "select * from kutyak";
             ResultSet rs = stmt.executeQuery(SQL);
           
           
@@ -141,7 +152,8 @@ public class LogIn extends javax.swing.JFrame {
                 return true;
             else
                 return false;
-        }
+        
+            }
         catch(Exception e)
         {
             e.printStackTrace();
@@ -161,19 +173,24 @@ public class LogIn extends javax.swing.JFrame {
         else
         {
             String user = textUserName.getText();
+            logger.log(Level.INFO, user+" was inputted");
             String pass = textPassword.getText();
+            logger.log(Level.INFO, pass+" was inputted");
             //ha sikerült belépni a db-be továbblépés
             if(validate_login(user, pass))
             {
                 JOptionPane.showMessageDialog(null,"Correct Login Credentials");
                 
-                
+                logger.log(Level.INFO, user+pass+" were validated");
                 MainMenu menu = new MainMenu();
                 menu.setVisible(true);
                 this.dispose();
             }
             else
+            {
                 JOptionPane.showMessageDialog(null, "Incorrect Login Credentials");
+            logger.log(Level.INFO, pass+" was incorrect");
+            }
          }
         
     }//GEN-LAST:event_TryLogInActionPerformed
@@ -220,7 +237,26 @@ public class LogIn extends javax.swing.JFrame {
             
            
         });
+        /*try {
+            LogManager.getLogManager().readConfiguration(new FileInputStream("mylogging.properties"));
+        } catch (SecurityException | IOException e1) {
+            e1.printStackTrace();
+        }*/
+        logger.setLevel(Level.FINE);
+        logger.addHandler(new ConsoleHandler());
+        //adding custom handler
         
+        try {
+            //FileHandler file name with max size and number of log files limit
+            Handler fileHandler = new FileHandler("/Users/Gabor/tmp/logger.log", 2000, 5);
+            
+            //setting custom filter for FileHandler
+            
+            logger.addHandler(fileHandler);
+             
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
