@@ -5,10 +5,13 @@
  */
 package Base;
 
+import static Base.Kennelek.logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
 /**
@@ -57,4 +60,23 @@ public class DBResult
         return null;
         }
     }
+    
+    public int NextID(ResultSet rs)
+    {
+        try
+        {
+        int curentRow = rs.getRow();
+        rs.last();
+        int rownumber = rs.getInt("ID");
+        rs.absolute(curentRow);
+        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
+        return rownumber + 1;
+        }
+        catch (SQLException e)
+        {
+            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return -1;
+        }
+}
 }

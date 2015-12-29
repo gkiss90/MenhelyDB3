@@ -389,12 +389,12 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         try
         {
         curRow = rs.getRow();
-        textID.setText(Integer.toString(NextID()));
+        textID.setText(Integer.toString(db.NextID(rs)));
             textHossz.setText("");
             textMelyseg.setText("");
             textMagassag.setText("");
             textFerohely.setText("");
-            
+            jButtonBack.setEnabled(false);
             jButtonSave.setEnabled(true);
             jButtonCancel.setEnabled(true);
             jButtonNext.setEnabled(false);
@@ -421,6 +421,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         FillIn();
             jButtonSave.setEnabled(false);
             jButtonCancel.setEnabled(false);
+            jButtonBack.setEnabled(true);
             jButtonNext.setEnabled(true);
             jButtonPrev.setEnabled(true);
             jButtonUpdate.setEnabled(true);
@@ -449,6 +450,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs = db.RSCreate("select * from cella");
         DBFill();
             jButtonSave.setEnabled(false);
+            jButtonBack.setEnabled(true);
             jButtonCancel.setEnabled(false);
             jButtonNext.setEnabled(true);
             jButtonPrev.setEnabled(true);
@@ -678,7 +680,8 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
     }
     //új recordnak következő ID kiszámítása
-    public int NextID()
+    /*
+    public int NextID(ResultSet rs)
     {
         try
         {
@@ -697,7 +700,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
 
     }
-
+*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCancel;
