@@ -130,7 +130,7 @@ public class LogIn extends javax.swing.JFrame {
             // sql futtatas
             
             Statement stmt = con.createStatement();
-            String SQL = "SELECT * FROM kutyak";
+            String SQL = "select * form kutyak";
             ResultSet rs = stmt.executeQuery(SQL);
           
           

@@ -37,6 +37,9 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         ResultSet rs = db.RSCreate("select * from cella");
         int curRow = 0;
         
+    /**
+     *
+     */
     public Kennelek() {
         initComponents();
         DBFill();
@@ -466,6 +469,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
  
     }
 //mezők kitöltése léptetéssel
+
+    /**
+     *
+     */
     @Override
     public void DBFill() {
      try{
@@ -480,6 +487,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
     }
 //mezők kitöltése
+
+    /**
+     *
+     */
     @Override
     public void FillIn() {
         
@@ -511,6 +522,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
     }
 //record módosítása
+
+    /**
+     *
+     */
     @Override
     public void UpdateRecord() {
  
@@ -540,6 +555,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
     }
 //új record beillesztése
+
+    /**
+     *
+     */
     @Override
     public void InsertRecord() {
 

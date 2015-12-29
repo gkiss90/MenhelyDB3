@@ -15,8 +15,9 @@ import javax.swing.JOptionPane;
  *
  * @author Gabor
  */
-public class DBResult {
-        private String host= "jdbc:derby://localhost:1527/Kutya_menhely";
+public class DBResult 
+{
+    private String host= "jdbc:derby://localhost:1527/Kutya_menhely";
     private String Name = "user1";
     private String Pass = "user1";
     
@@ -28,14 +29,14 @@ public class DBResult {
     
 
     
-    public Connection DBConnect(String SQL)
+    public Connection DBConnect()
     {
         try{
         Connection connection_ = DriverManager.getConnection(host, Name, Pass);
         return connection_;
         }
-        catch(Exception err)
-        {JOptionPane.showMessageDialog(null, err.getMessage());
+        catch(Exception e)
+        {JOptionPane.showMessageDialog(null, e.getMessage());
         return null;
         }
     }
@@ -43,7 +44,7 @@ public class DBResult {
     public ResultSet RSCreate(String SQL)
     {
         try{
-        con = DBConnect(SQL);
+        con = DBConnect();
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                                       ResultSet.CONCUR_UPDATABLE);
             
@@ -51,8 +52,8 @@ public class DBResult {
             ResultSet result = stmt.executeQuery(SQL);
             return result;
         }
-        catch(Exception err)
-        {JOptionPane.showMessageDialog(null, err.getMessage());
+        catch(Exception e)
+        {JOptionPane.showMessageDialog(null, e.getMessage());
         return null;
         }
     }

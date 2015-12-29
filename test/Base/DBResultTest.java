@@ -6,7 +6,10 @@
 package Base;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,10 +50,10 @@ public class DBResultTest {
     @Test
     public void testDBConnect() {
         System.out.println("DBConnect");
-        String SQL = "";
+        
         DBResult instance = new DBResult();
         Connection expResult = null;
-        Connection result = instance.DBConnect(SQL);
+        Connection result = instance.DBConnect();
         assertEquals(expResult, result);
         
     }
@@ -61,12 +64,20 @@ public class DBResultTest {
     @Test
     public void testRSCreate() {
         System.out.println("RSCreate");
-        String SQL = "";
+        try{String SQL = "select * from kutyak";
+        
+        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Kutya_menhely", "user1", "user1");           
+        Statement stmt = con.createStatement();
+        
+        
         DBResult instance = new DBResult();
-        ResultSet expResult = null;
+        ResultSet expResult = stmt.executeQuery(SQL);
         ResultSet result = instance.RSCreate(SQL);
         assertEquals(expResult, result);
-        
+        }
+        catch(Exception e)
+            {JOptionPane.showMessageDialog(null, e.getMessage());
     }
     
+}
 }
