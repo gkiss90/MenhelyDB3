@@ -5,13 +5,9 @@
  */
 package Base;
 
-import static Base.Kennelek.logger;
-import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -48,18 +44,7 @@ public class DBResultTest {
     /**
      * Test of DBConnect method, of class DBResult.
      */
-    
-    //hibás
-    @Test
-    public void testDBConnect() {
-        System.out.println("DBConnect");
-        
-        DBResult instance = new DBResult();
-        Connection expResult = null;
-        Connection result = instance.DBConnect();
-        assertEquals(expResult, result);
-        
-    }
+   
 
     /**
      * Test of RSCreate method, of class DBResult.
@@ -67,39 +52,48 @@ public class DBResultTest {
     @Test
     public void testRSCreate() {
         System.out.println("RSCreate");
-        try{String SQL = "select * from kutyak";
+        String SQL = "select * from kutyak";
+        DBResult instance = new DBResult();
+        ResultSet rs = instance.RSCreate(SQL);
+        try
+        {
+        rs.next();
+        int expResult = rs.getRow();
         
-        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/Kutya_menhely", "user1", "user1");           
-        Statement stmt = con.createStatement();
+        int result = rs.getInt("ID");
+        assertEquals(expResult, result);
+        }
+        catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        // TODO review the generated test code and remove the default call to fail.
+        
+    }
+
+    /**
+     * Test of NextID method, of class DBResult.
+     */
+    @Test
+    public void testNextID() {
+        System.out.println("NextID");
         
         
         DBResult instance = new DBResult();
-        ResultSet expResult = stmt.executeQuery(SQL);
-        ResultSet result = instance.RSCreate(SQL);
-        assertEquals(expResult, result);
+        ResultSet rs = instance.RSCreate("select * from kutyak");
+        try{
+                rs.last();
+        int expResult = rs.getInt("ID")+1;
+        
+        int result = instance.NextID(rs);
+        rs.close();
+        assertEquals(expResult, result);}
+        catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        catch(Exception e)
-            {JOptionPane.showMessageDialog(null, e.getMessage());
+        // TODO review the generated test code and remove the default call to fail.
+        
     }
     
-}
-    
-    public int NextID(ResultSet rs)
-    {
-        try
-        {
-        int curentRow = rs.getRow();
-        rs.last();
-        int rownumber = rs.getInt("ID");
-        rs.absolute(curentRow);
-        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
-        return rownumber + 1;
-        }
-        catch (SQLException e)
-        {
-            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
-            JOptionPane.showMessageDialog(null, e.getMessage());
-            return -1;
-        }
-}
 }

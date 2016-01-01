@@ -15,15 +15,9 @@ package Base;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class Menhely extends javax.swing.JFrame implements DBConnectionInterface {
 
@@ -39,21 +33,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
     Connection con;
     Statement stmt;
     */
-    
-    static Logger logger = Logger.getLogger(Menhely.class.getName());
-    
     int curRow = 0;   
+    
+    static Logger logger = Logger.getLogger(Kennelek.class.getName());
     
     //db kapcsolat felállítása
     
-    DBResult db = new DBResult();
+     DBResult db = new DBResult();
     ResultSet rs = db.RSCreate("select * from kutyak");
     
     public Menhely() {
         initComponents();
        //ComboFill();
        DBFill();
-       logger.log(Level.INFO, "Menhely form megnyitva");
        
         
     }
@@ -114,6 +106,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         catch
                  (SQLException e)
         {
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -168,11 +161,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             {
                 checkApolas.setSelected(false);
             }
+            logger.log(Level.INFO, "Kutya adatok megjelenitve");
             
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Adatlekérés közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -211,13 +205,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.updateInt("Cella_id", Cella);
         rs.updateBoolean("apolas_alatt", apolase);
         rs.updateRow();
-        
-        logger.log(Level.INFO, "ID. "+ID+"módosítva");
+        logger.log(Level.INFO, ID+" kutya modositva");
         
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Módosítás közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -247,18 +240,18 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
            
              try{
                       
-        rs.updateInt("ID", ID);
+       rs.updateInt("ID", ID);
         rs.updateString("Nev", Nev);
         rs.updateString("Fajta", Faj);
         rs.updateInt("Kor", Kor);
         rs.updateInt("Cella_id", Cella);
         rs.updateBoolean("apolas_alatt", apolase);
         rs.insertRow();
-        logger.log(Level.INFO, "létrehozott új egyed: "+ID);
+        logger.log(Level.INFO, ID+" kutya elmentve");
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Új egyed létrehozása közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -273,13 +266,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.last();
         int rownumber = rs.getInt("ID");
         rs.absolute(curentRow);
-        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
         return rownumber + 1;
+    
         }
-        catch (SQLException e)
+        catch (SQLException err)
         {
-            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, err.getMessage());
             return 0;
         }
 
@@ -315,19 +307,17 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             rsCella.close();
             rs.absolute(curRow);
-            logger.log(Level.INFO, textCella.getText()+" kennelben már nincs hely");
             return false;
             
         }
         else
             rsCella.close();
             rs.absolute(curRow);
-            logger.log(Level.INFO, textCella.getText()+" kennelben még van hely");
             return true;
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Kennel férőhely ellenőrzés alatt fellépett hiba: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
             return false;
         }
@@ -354,6 +344,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jLabel5 = new javax.swing.JLabel();
         textKor = new javax.swing.JTextField();
         checkApolas = new javax.swing.JCheckBox();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jButtonUpdate = new javax.swing.JButton();
         jButtonNew = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
@@ -363,10 +354,6 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jButtonPrev = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -395,6 +382,12 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jLabel5.setText("Életkor");
 
         checkApolas.setText("Ápolás alatt?");
+
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jButtonUpdate.setText("Update Record");
         jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -461,77 +454,70 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             }
         });
 
-        jLabel6.setText("év");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(textFaj))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(5, 5, 5)
-                                        .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(24, 24, 24)
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(textNev, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textCella, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(textKor, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel6))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonNext)
-                                .addGap(51, 51, 51)
-                                .addComponent(jButtonPrev)
-                                .addGap(41, 41, 41)
-                                .addComponent(jButtonDelete)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                                .addComponent(jButtonBack))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(checkApolas)
-                                .addGap(1, 1, 1))))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(26, 26, 26)
+                        .addComponent(textNev, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFaj, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(checkApolas)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButtonUpdate)
-                                .addGap(42, 42, 42)
-                                .addComponent(jButtonRefresh))
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textKor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jButtonSave)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonCancel)
-                                .addGap(7, 7, 7))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(60, 60, 60)
-                                .addComponent(jButtonNew)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(79, 79, 79))
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jSeparator2)
-            .addComponent(jSeparator3)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(textCella, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButtonUpdate)
+                        .addGap(42, 42, 42)
+                        .addComponent(jButtonRefresh))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jButtonSave)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonNew, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonCancel, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(86, 86, 86))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonNext)
+                .addGap(51, 51, 51)
+                .addComponent(jButtonPrev)
+                .addGap(41, 41, 41)
+                .addComponent(jButtonDelete)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonBack)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,38 +528,30 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
                     .addComponent(textNev, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(textCella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(textFaj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
-                        .addComponent(textKor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)))
-                .addGap(18, 18, 18)
-                .addComponent(checkApolas)
-                .addGap(24, 24, 24)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textKor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonUpdate)
-                            .addComponent(jButtonRefresh))
-                        .addGap(4, 4, 4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonNew)
-                        .addGap(18, 18, 18)))
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                    .addComponent(checkApolas)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonUpdate)
+                    .addComponent(jButtonNew)
+                    .addComponent(jButtonRefresh))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonSave)
                     .addComponent(jButtonCancel))
-                .addGap(1, 1, 1)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNext)
                     .addComponent(jButtonPrev)
@@ -596,7 +574,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -606,12 +584,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         // TODO add your handling code here:
     }//GEN-LAST:event_textNevActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     private void jButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUpdateActionPerformed
         // TODO add your handling code here:
         //végrehajtja a módosítást
-        logger.log(Level.INFO, "Adatmódosítás megkezdése");
+        
         UpdateRecord();
-    
+    logger.log(Level.INFO, "Adatmodositas sikeres");
     
         
     }//GEN-LAST:event_jButtonUpdateActionPerformed
@@ -633,19 +618,18 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             
         jButtonUpdate.setEnabled(false);
         jButtonNew.setEnabled(false);
-        
+        jComboBox1.setEnabled(false);
         jButtonRefresh.setEnabled(false);
-        jButtonNext.setEnabled(false);
+        jButtonSave.setEnabled(true);
+        jButtonCancel.setEnabled(true);
+         jButtonNext.setEnabled(false);
         jButtonPrev.setEnabled(false);
         jButtonDelete.setEnabled(false);
         jButtonBack.setEnabled(false);
-        jButtonSave.setEnabled(true);
-        jButtonCancel.setEnabled(true);
-        logger.log(Level.INFO, "Új egyed felvételére felkészítés");
-        
+        logger.log(Level.INFO, "Form uj adatbevitelre elokeszitve");
         }
-        catch(Exception e){
-            logger.log(Level.INFO, "Új egyed felvételére való felkészítés közben hiba lépett fel: "+e);
+        catch(SQLException e){
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNewActionPerformed
@@ -662,17 +646,17 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jButtonNew.setEnabled(true);
         jButtonSave.setEnabled(false);
         jButtonCancel.setEnabled(false);
-        
+        jComboBox1.setEnabled(true);
         jButtonRefresh.setEnabled(true);
-        jButtonNext.setEnabled(true);
-        jButtonPrev.setEnabled(true);
-        jButtonDelete.setEnabled(true);
-        jButtonBack.setEnabled(true);
+         jButtonNext.setEnabled(true);
+ jButtonPrev.setEnabled(true);
+ jButtonDelete.setEnabled(true);
+ jButtonBack.setEnabled(true);
         textID.setEnabled(false);
-        logger.log(Level.INFO, "Új egyed létrehozásából kilépés");
+        logger.log(Level.INFO, "Uj adatbevitelbol kilepes");
         }
         catch(SQLException e){
-            logger.log(Level.INFO, "Hiba új egyed létrehozásából kilépés alatt: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonCancelActionPerformed
@@ -684,17 +668,17 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         
         try
         {
-        curRow = rs.getRow();
+            curRow = rs.getRow();
             
         db.stmt.close();
         rs.close();
         rs = db.RSCreate("select * from kutyak");
         rs.absolute(curRow);
         FillIn();
-        logger.log(Level.INFO, "A form adatainak frissítése");
+        logger.log(Level.INFO, "Adatok ujra megjelenitve");
         }
         catch(SQLException e){
-            logger.log(Level.INFO, "A form adatainak frissítése közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonRefreshActionPerformed
@@ -707,19 +691,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             if(rs.next())
             {
-                logger.log(Level.INFO, "Következő egyed megjelenítése");
                 FillIn();
+                logger.log(Level.INFO, "Elore leptetes");
             }
             else
             {
                 rs.previous();
-                logger.log(Level.INFO, "Nincs következő egyed a DB-ben");
                 JOptionPane.showMessageDialog(Menhely.this, "End of file");
+                logger.log(Level.INFO, "Nincs tobb kutya");
             }
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba az egyed közti léptetés közben: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
@@ -732,19 +716,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         {
             if(rs.previous())
             {
-                logger.log(Level.INFO, "Előző egyed megjelenítése");
                 FillIn();
+                logger.log(Level.INFO, "Hatra leptetes");
             }
             else
             {
                 rs.next();
-                logger.log(Level.INFO, "Nincs korábbi egyed a DB-ben");
+                logger.log(Level.INFO, "Nincs több kutya");
                 JOptionPane.showMessageDialog(Menhely.this, "Beginning of file");
             }
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Előző egyed megjelenítése");
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
@@ -759,11 +743,11 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         rs.close();
         rs = db.RSCreate("select * from kutyak");
         DBFill();
-        logger.log(Level.INFO, "Egyed törölve");
+        logger.log(Level.INFO, "Kutya torolve");
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba az egyed törlése közben"+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(Menhely.this, e.getMessage());
         }
         
@@ -798,19 +782,19 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         jButtonNew.setEnabled(true);
         jButtonSave.setEnabled(false);
         jButtonCancel.setEnabled(false);
-        
-        jButtonRefresh.setEnabled(true);
-        jButtonNext.setEnabled(true);
-        jButtonPrev.setEnabled(true);
-        jButtonDelete.setEnabled(true);
-        jButtonBack.setEnabled(true);
+        jComboBox1.setEnabled(true);
         textID.setEnabled(false);
         checkApolas.setSelected(false);
-        logger.log(Level.INFO, "Új egyed sikeresen elmentve");
+         jButtonNext.setEnabled(true);
+ jButtonPrev.setEnabled(true);
+ jButtonDelete.setEnabled(true);
+ jButtonBack.setEnabled(true);
+        jButtonRefresh.setEnabled(true);
+        logger.log(Level.INFO, "Uj kutya mentese sikeres");
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba az új egyed mentése közben "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonSaveActionPerformed
@@ -822,15 +806,13 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
          try{
         db.stmt.close();
         rs.close();
-        logger.log(Level.INFO, "DB kapcsolat zárása");
+        logger.log(Level.INFO, "Kilepes fomenube");
         }
-         
          catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba a db kapcsolat zárása közben: "+e);
+            logger.log(Level.INFO, "Hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-        logger.log(Level.INFO, "Main Menu-be visszalépés");
         this.dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -880,16 +862,13 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonUpdate;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField textCella;
     private javax.swing.JTextField textFaj;
     private javax.swing.JTextField textID;

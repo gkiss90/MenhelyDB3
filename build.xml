@@ -71,3 +71,113 @@
 
     -->
 </project>
+
+
+
+
+
+
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
+fillin hiba
+logger.log(Level.INFO, "Adatlekérés közben fellépett hiba: "+e);
+
+updaterecord:
+logger.log(Level.INFO, "ID. "+ID+"módosítva");
+logger.log(Level.INFO, "Módosítás közben fellépett hiba: "+e);
+
+InsertRecord
+logger.log(Level.INFO, "létrehozott új egyed: "+ID);
+logger.log(Level.INFO, "Új egyed létrehozása közben fellépett hiba: "+e);
+
+Nextid
+logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
+logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
+
+cellacheck
+logger.log(Level.INFO, textCella.getText()+"kennelben már nincs hely");
+logger.log(Level.INFO, textCella.getText()+"kennelben még van hely");
+logger.log(Level.INFO, "Kennel férőhely ellenőrzés alatt fellépett hiba: "+e);
+
+
+updatebutton
+logger.log(Level.INFO, "Adatmódosítás megkezdése");
+
+Newactionperformed
+logger.log(Level.INFO, "Új egyed felvételére felkészítés");
+logger.log(Level.INFO, "Új egyed felvételére való felkészítés közben hiba lépett fel: "+e);
+
+
+cancelbutton
+logger.log(Level.INFO, "Új egyed létrehozásából kilépés");
+logger.log(Level.INFO, "Hiba új egyed létrehozásából kilépés alatt: "+e);
+
+refresh
+logger.log(Level.INFO, "A form adatainak frissítése");
+logger.log(Level.INFO, "A form adatainak frissítése közben fellépett hiba:"+e);
+
+next
+logger.log(Level.INFO, "Következő egyed megjelenítése");
+logger.log(Level.INFO, "Nincs következő egyed a DB-ben");
+logger.log(Level.INFO, "Hiba az egyed közti léptetés közben:"+e);
+
+prev
+logger.log(Level.INFO, "Előző egyed megjelenítése");
+logger.log(Level.INFO, "Nincs korábbi egyed a DB-ben");
+logger.log(Level.INFO, "Hiba az egyed közti léptetés közben:"+e);
+
+del
+logger.log(Level.INFO, "Egyed törölve");
+logger.log(Level.INFO, "Hiba az egyed törlése közben"+e);
+
+
+savebutton
+logger.log(Level.INFO, "Új egyed sikeresen elmentve");
+logger.log(Level.INFO, "Hiba az új egyed mentése közben"+e);
+
+back
+logger.log(Level.INFO, "DB kapcsolat zárása");
+logger.log(Level.INFO, "Hiba a db kapcsolat zárása közben: "+e);
+
+
+
+
+
+
+
+
+létrehozza a loggert
+
+static Logger logger = Logger.getLogger(LoggingExample.class.getName());
+
+
+ezzel lehet írni
+
+logger.log(Level.INFO, "kijelentkezés");
+
+
+main-be
+
+        logger.setLevel(Level.FINE);
+        logger.addHandler(new ConsoleHandler());
+        //adding custom handler
+        
+        try {
+            //FileHandler file name with max size and number of log files limit
+            Handler fileHandler = new FileHandler("/Users/Gabor/tmp/logger.log", 2000, 5);
+            
+            //setting custom filter for FileHandler
+            
+            logger.addHandler(fileHandler);
+             
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
