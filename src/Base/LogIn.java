@@ -14,15 +14,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
-import java.io.FileInputStream;
+
 import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
+
 import java.util.logging.Logger;
 
 
@@ -64,7 +64,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             }
         });
 
-        Cancel.setText("Cancel");
+        Cancel.setText("Exit");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
@@ -180,7 +180,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             {
                 JOptionPane.showMessageDialog(null,"Correct Login Credentials");
                 
-                logger.log(Level.INFO, user+pass+" were validated");
+                logger.log(Level.INFO, user+", "+pass+" elfogadva");
                 MainMenu menu = new MainMenu();
                 menu.setVisible(true);
                 this.dispose();
@@ -188,7 +188,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             else
             {
                 JOptionPane.showMessageDialog(null, "Incorrect Login Credentials");
-            logger.log(Level.INFO, pass+" was incorrect");
+            logger.log(Level.INFO, pass+" helytelen jelszo");
             }
          }
         
@@ -196,6 +196,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
 
     private void CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelActionPerformed
         // TODO add your handling code here:
+        logger.log(Level.INFO, "Program bezarasa");
         System.exit(0);
        
     }//GEN-LAST:event_CancelActionPerformed

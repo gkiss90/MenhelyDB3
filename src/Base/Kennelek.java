@@ -7,18 +7,14 @@ package Base;
 
 //import java.sql.Connection;
 //import java.sql.DriverManager;
-import static Base.Menhely.logger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 //import java.sql.Statement;
 import javax.swing.JOptionPane;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
+
 import java.util.logging.Level;
-import java.util.logging.LogManager;
+
 import java.util.logging.Logger;
 
 
@@ -338,19 +334,19 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         {
             if(rs.next())
             {
-                logger.log(Level.INFO, "Következő kennel megjelenítése");
+                logger.log(Level.INFO, "Kovetkezo kennel megjelenitese");
                 FillIn();
             }
             else
             {
-                logger.log(Level.INFO, "Nincs következő kennel a DB-ben");
+                logger.log(Level.INFO, "Nincs kovetkezo kennel a DB-ben");
                 rs.previous();
-                JOptionPane.showMessageDialog(this, "Utolsó kennel");
+                JOptionPane.showMessageDialog(this, "Utolso kennel");
             }
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba a kennelek közti léptetés közben:"+e);
+            logger.log(Level.INFO, "Hiba a kennelek kozti leptetes kozben:"+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonNextActionPerformed
@@ -363,19 +359,19 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         {
             if(rs.previous())
             {
-                logger.log(Level.INFO, "Előző kennel megjelenítése");
+                logger.log(Level.INFO, "Elozo kennel megjelenitese");
                 FillIn();
             }
             else
             {
-                logger.log(Level.INFO, "Nincs korábbi kennel a DB-ben");
+                logger.log(Level.INFO, "Nincs korabbi kennel a DB-ben");
                 rs.next();
-                JOptionPane.showMessageDialog(this, "Első kennel");
+                JOptionPane.showMessageDialog(this, "Elso kennel");
             }
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba a kennelek közti léptetés közben:"+e);
+            logger.log(Level.INFO, "Hiba a kennelek kozti leptetes kozben:"+e);
             JOptionPane.showMessageDialog(Kennelek.this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
@@ -385,7 +381,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         
         //a form előkészítése egy új kennel beviteléhez
         
-        logger.log(Level.INFO, "új kutya bevitele kezdődik");
+        
         try
         {
         curRow = rs.getRow();
@@ -402,10 +398,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonUpdate.setEnabled(false);
             jButtonNew.setEnabled(false);
             jButtonDelete.setEnabled(false);
-            logger.log(Level.INFO, "Új kennel felvételére felkészítés");
+            logger.log(Level.INFO, "Uj kennel felvételére felkeszites");
         }
                 catch(SQLException e){
-                    logger.log(Level.INFO, "Új kennel felvételére való felkészítés közben hiba lépett fel: "+e);
+                    logger.log(Level.INFO, "Uj kennel felvetelere valo felkeszites kozben hiba lepett fel: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
@@ -427,10 +423,10 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonUpdate.setEnabled(true);
             jButtonNew.setEnabled(true);
             jButtonDelete.setEnabled(true);
-            logger.log(Level.INFO, "Új kennel létrehozásából való kilépés");
+            logger.log(Level.INFO, "Uj kennel letrehozasabol valo kilepes");
         }
         catch(SQLException e){
-            logger.log(Level.INFO, "Hiba új kennel létrehozásából kilépés alatt: "+e);
+            logger.log(Level.INFO, "Hiba új kennel letrehozasabol kilepes alatt: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
@@ -457,11 +453,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonUpdate.setEnabled(true);
             jButtonNew.setEnabled(true);
             jButtonDelete.setEnabled(true);
-            logger.log(Level.INFO, "Új kennel sikeresen elmentve");
+            logger.log(Level.INFO, "Uj kennel sikeresen elmentve");
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba az új kennel mentése közben"+e);
+            logger.log(Level.INFO, "Hiba az uj kennel mentese kozben"+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonSaveActionPerformed
@@ -473,14 +469,14 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         try{
         db.stmt.close();
         rs.close();
-        logger.log(Level.INFO, "DB kapcsolat zárása");
+        logger.log(Level.INFO, "DB kapcsolat zarasa");
         }
          catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba a db kapcsolat zárása közben: "+e);
+            logger.log(Level.INFO, "Hiba a db kapcsolat zarasa kozben: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-        logger.log(Level.INFO, "Visszaléps Main Menu-be");
+        logger.log(Level.INFO, "Visszalepes Main Menu-be");
         this.dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -493,11 +489,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.close();
         rs = db.RSCreate("select * from cella");
         DBFill();
-        logger.log(Level.INFO, "Kennel törölve");
+        logger.log(Level.INFO, "Kennel torolve");
         }
         catch(SQLException e)
         {
-            logger.log(Level.INFO, "Hiba a kennel törlése közben"+e);
+            logger.log(Level.INFO, "Hiba a kennel torlese kozben"+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
@@ -605,7 +601,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Adatlekérés közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Adatlekeres kozben fellepett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -636,11 +632,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.updateInt("magassag", magassag);
         rs.updateInt("ferohely", ferohely);
         rs.updateRow();
-        logger.log(Level.INFO, "ID. "+id+" módosítva");
+        logger.log(Level.INFO, "ID. "+id+" modosítva");
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Módosítás közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Modosítas kozben fellepett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
@@ -672,11 +668,11 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
         rs.updateInt("magassag", magassag);
         rs.updateInt("ferohely", ferohely);
         rs.insertRow();
-        logger.log(Level.INFO, "létrehozott új egyed: "+ID);
+        logger.log(Level.INFO, "Letrehozott uj egyed: "+ID);
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Új egyed létrehozása közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Uj egyed letrehozasa kozben fellepett hiba: "+e);
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }

@@ -70,12 +70,12 @@ public class DBResult
         rs.last();
         int rownumber = rs.getInt("ID");
         rs.absolute(curentRow);
-        logger.log(Level.INFO, "Új egyed ID-ja: "+rownumber+1);
+        logger.log(Level.INFO, "Uj egyed ID-ja: "+rownumber+1);
         return rownumber + 1;
         }
         catch (SQLException e)
         {
-            logger.log(Level.INFO, "Új ID kiszámítás közben fellépett hiba: "+e);
+            logger.log(Level.INFO, "Uj ID kiszámítás közben fellépett hiba: "+e);
             JOptionPane.showMessageDialog(null, e.getMessage());
             return -1;
         }
