@@ -456,6 +456,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             jButtonPrev.setEnabled(true);
             jButtonUpdate.setEnabled(true);
             jButtonNew.setEnabled(true);
+            jButtonDelete.setEnabled(true);
             logger.log(Level.INFO, "Új kennel sikeresen elmentve");
         }
         catch(SQLException e)

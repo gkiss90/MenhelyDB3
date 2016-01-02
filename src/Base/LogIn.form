@@ -35,10 +35,10 @@
                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="55" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="Cancel" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="textPassword" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="textUserName" alignment="1" min="-2" pref="111" max="-2" attributes="0"/>
+                  <Component id="textUserName" alignment="1" pref="111" max="32767" attributes="0"/>
+                  <Component id="textPassword" alignment="1" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
           </Group>
@@ -120,9 +120,6 @@
     <Component class="javax.swing.JTextField" name="textUserName">
     </Component>
     <Component class="javax.swing.JPasswordField" name="textPassword">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

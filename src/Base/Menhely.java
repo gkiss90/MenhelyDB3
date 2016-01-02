@@ -286,10 +286,14 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
         int count = 0;
         
         String select = "select * from cella where id = " + textCella.getText();
-        Statement stamt = db.con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                                      ResultSet.CONCUR_UPDATABLE);
         
-        ResultSet rsCella = stamt.executeQuery(select);
+        
+        //Statement stamt = db.con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+          //                            ResultSet.CONCUR_UPDATABLE);
+        
+        ResultSet rsCella = db.RSCreate(select);
+                
+                //stamt.executeQuery(select);
         rs.first();
         rsCella.first();
         while(rs.next())
@@ -383,6 +387,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
 
         checkApolas.setText("Ápolás alatt?");
 
+        jComboBox1.setEnabled(false);
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -463,7 +468,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(51, 51, 51)
                         .addComponent(jLabel2)
                         .addGap(26, 26, 26)
                         .addComponent(textNev, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -475,7 +480,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -539,7 +544,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkApolas)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(textID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1)))
                 .addGap(52, 52, 52)

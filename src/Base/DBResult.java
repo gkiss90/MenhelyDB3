@@ -6,6 +6,7 @@
 package Base;
 
 import static Base.Kennelek.logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -78,5 +79,61 @@ public class DBResult
             JOptionPane.showMessageDialog(null, e.getMessage());
             return -1;
         }
-}
+    }
+    
+    /*
+        public boolean CellaCheck(int KennelID)
+    {
+        try
+        {
+        
+        //int count = 0;
+        
+        String select1 ="select * from kutyak where cella_id = " + KennelID;
+        
+        ResultSet rsKutya = RSCreate(select1);
+        //curRow = rsKutya.getRow();
+        String select2 = "select * from cella where id = " + KennelID;
+        //Statement stamt = db.con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+        //                              ResultSet.CONCUR_UPDATABLE);
+        
+        ResultSet rsCella = RSCreate(select2);
+        //rsKutya.first();
+        //rsCella.first();
+        rsKutya.last();
+        int count = rsKutya.getRow();
+        /*
+        while(rsKutya.next())
+        {
+            if(rsKutya.getInt("cella_id") == Integer.parseInt(KennelID))
+            {
+            count = count + 1;
+                rsKutya.next();
+            }
+                else
+                rsKutya.next();
+        }
+        
+        if (count >= rsCella.getInt("ferohely"))
+        {
+            rsCella.close();
+            rsKutya.close();
+            //rsKutya.absolute(curRow);
+            return false;
+            
+        }
+        else
+            rsCella.close();
+        rsKutya.close();
+            //rsKutya.absolute(curRow);
+            return true;
+        }
+        catch (SQLException e)
+        {
+            
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
+        }
+    }
+*/
 }
