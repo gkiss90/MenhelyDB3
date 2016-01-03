@@ -7,6 +7,7 @@ package Base;
 
 import static Base.Kennelek.logger;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -136,4 +137,56 @@ public class DBResult
         }
     }
 */
+    
+    
+    
+    
+        public boolean CellaCheck(ResultSet rs, int kennelid)
+    {
+        try
+        {
+        curRow = rs.getRow();
+        int count = 0;
+        
+        String select = "select * from cella where id = " + kennelid;
+        
+        
+        //Statement stamt = db.con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+          //                            ResultSet.CONCUR_UPDATABLE);
+        
+        ResultSet rsCella = RSCreate(select);
+                
+                //stamt.executeQuery(select);
+        rs.first();
+        rsCella.first();
+        while(rs.next())
+        {
+            if(rs.getInt("cella_id") == kennelid)
+            {
+            count = count + 1;
+                rs.next();
+            }
+                else
+                rs.next();
+        }
+        
+        if (count >= rsCella.getInt("ferohely"))
+        {
+            rsCella.close();
+            rs.absolute(curRow);
+            return false;
+            
+        }
+        else
+            rsCella.close();
+            rs.absolute(curRow);
+            return true;
+        }
+        catch (SQLException e)
+        {
+            logger.log(Level.INFO, "Hiba: "+e);
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            return false;
+        }
+    }
 }
