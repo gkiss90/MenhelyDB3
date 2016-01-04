@@ -57,14 +57,14 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        TryLogIn.setText("Log In");
+        TryLogIn.setText("Bejelentkezés");
         TryLogIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TryLogInActionPerformed(evt);
             }
         });
 
-        Cancel.setText("Exit");
+        Cancel.setText("Kilépés");
         Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelActionPerformed(evt);
@@ -82,9 +82,9 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jLabel1.setText("Username");
+        jLabel1.setText("Felhasználónév");
 
-        jLabel2.setText("Password");
+        jLabel2.setText("Jelszó");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,13 +93,16 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TryLogIn))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(TryLogIn)
+                        .addGap(45, 45, 45)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Cancel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(textUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
@@ -166,19 +169,19 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
         //mezők validálása
         
         if(textUserName.getText().length()==0)
-            JOptionPane.showMessageDialog(null, "Empty fields detected!");
+            JOptionPane.showMessageDialog(null, "Adjon meg Felhasznalonevet!");
         else if(textPassword.getText().length()==0)
-            JOptionPane.showMessageDialog(null, "Empty fields detected!");
+            JOptionPane.showMessageDialog(null, "Adjon meg Jelszavat!");
         else
         {
             String user = textUserName.getText();
-            logger.log(Level.INFO, user+" was inputted");
+            logger.log(Level.INFO, user+" beirva");
             String pass = textPassword.getText();
-            logger.log(Level.INFO, pass+" was inputted");
+            logger.log(Level.INFO, pass+" beirva");
             //ha sikerült belépni a db-be továbblépés
             if(validate_login(user, pass))
             {
-                JOptionPane.showMessageDialog(null,"Correct Login Credentials");
+                JOptionPane.showMessageDialog(null,"Sikeres bejelentkezes");
                 
                 logger.log(Level.INFO, user+", "+pass+" elfogadva");
                 MainMenu menu = new MainMenu();
@@ -187,7 +190,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "Incorrect Login Credentials");
+                JOptionPane.showMessageDialog(null, "Helytelen Bejelentkezes");
             logger.log(Level.INFO, pass+" helytelen jelszo");
             }
          }

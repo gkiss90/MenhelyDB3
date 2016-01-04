@@ -396,21 +396,21 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             }
         });
 
-        jButtonUpdate.setText("Update Record");
+        jButtonUpdate.setText("Módosítás");
         jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonUpdateActionPerformed(evt);
             }
         });
 
-        jButtonNew.setText("New Record");
+        jButtonNew.setText("Új Egyed");
         jButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNewActionPerformed(evt);
             }
         });
 
-        jButtonSave.setText("Save New Record");
+        jButtonSave.setText("Új Egyed Mentése");
         jButtonSave.setEnabled(false);
         jButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -418,7 +418,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             }
         });
 
-        jButtonCancel.setText("Cancel New Record");
+        jButtonCancel.setText("Visszavonás");
         jButtonCancel.setEnabled(false);
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -426,35 +426,35 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
             }
         });
 
-        jButtonRefresh.setText("Refresh");
+        jButtonRefresh.setText("Frissítés");
         jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRefreshActionPerformed(evt);
             }
         });
 
-        jButtonNext.setText("Next");
+        jButtonNext.setText("Következő");
         jButtonNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNextActionPerformed(evt);
             }
         });
 
-        jButtonPrev.setText("Previous");
+        jButtonPrev.setText("Előző");
         jButtonPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPrevActionPerformed(evt);
             }
         });
 
-        jButtonDelete.setText("Delete Row");
+        jButtonDelete.setText("Törlés");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDeleteActionPerformed(evt);
             }
         });
 
-        jButtonBack.setText("Back");
+        jButtonBack.setText("Vissza");
         jButtonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBackActionPerformed(evt);
@@ -505,7 +505,7 @@ public class Menhely extends javax.swing.JFrame implements DBConnectionInterface
                         .addComponent(jButtonUpdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonDelete)
-                        .addGap(65, 65, 65)
+                        .addGap(97, 97, 97)
                         .addComponent(jButtonNew)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()

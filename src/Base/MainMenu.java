@@ -55,7 +55,7 @@ static Logger logger = Logger.getLogger(MainMenu.class.getName());
             }
         });
 
-        jButtonLogOut.setText("Log Out");
+        jButtonLogOut.setText("Kijelentkezés");
         jButtonLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLogOutActionPerformed(evt);

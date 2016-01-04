@@ -152,35 +152,36 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
 
         jLabel9.setText("Férőhely");
 
-        jButtonUpdate.setText("Update Record");
+        jButtonUpdate.setText("Módosítás");
         jButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonUpdateActionPerformed(evt);
             }
         });
 
-        jButtonNext.setText("Next");
+        jButtonNext.setText("Következő");
         jButtonNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNextActionPerformed(evt);
             }
         });
 
-        jButtonPrev.setText("Previous");
+        jButtonPrev.setText("Előző");
+        jButtonPrev.setToolTipText("");
         jButtonPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonPrevActionPerformed(evt);
             }
         });
 
-        jButtonNew.setText("New Record");
+        jButtonNew.setText("Új Kennel");
         jButtonNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNewActionPerformed(evt);
             }
         });
 
-        jButtonCancel.setText("Cancel Record");
+        jButtonCancel.setText("Visszavonás");
         jButtonCancel.setEnabled(false);
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,7 +189,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             }
         });
 
-        jButtonSave.setText("Save New Record");
+        jButtonSave.setText("Új Kennel Mentése");
         jButtonSave.setEnabled(false);
         jButtonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,7 +197,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             }
         });
 
-        jButtonBack.setText("Back");
+        jButtonBack.setText("Vissza");
         jButtonBack.setToolTipText("");
         jButtonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -204,7 +205,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
             }
         });
 
-        jButtonDelete.setText("Delete Record");
+        jButtonDelete.setText("Kennel Törlése");
         jButtonDelete.setActionCommand("");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +271,7 @@ public class Kennelek extends javax.swing.JFrame implements DBConnectionInterfac
                                         .addComponent(jButtonPrev)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jButtonBack)))))
-                        .addGap(0, 44, Short.MAX_VALUE))
+                        .addGap(0, 18, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jSeparator2))
