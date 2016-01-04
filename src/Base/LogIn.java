@@ -251,7 +251,7 @@ static Logger logger = Logger.getLogger(LogIn.class.getName());
         
         try {
             //FileHandler file name with max size and number of log files limit
-            Handler fileHandler = new FileHandler("/Users/Gabor/tmp/logger.log", 2000, 5);
+            Handler fileHandler = new FileHandler("/Users/Kiss/tmp/logger.log", 2000, 5);
             
             //setting custom filter for FileHandler
             
